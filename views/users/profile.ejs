@@ -1,0 +1,76 @@
+<%- include('../partials/_header', { pageTitle: 'My Account' }) %>
+
+<main>
+  <h1>Welcome, <%= user.firstName %></h1>
+
+  <!-- ───────── Listed items ───────── -->
+  <h2>Your Listings</h2>
+  <% if (user.itemsListed && user.itemsListed.length) { %>
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Status</th>
+          <th colspan="3"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% user.itemsListed.forEach(i => { %>
+          <tr>
+            <td><a href="/items/<%= i._id %>"><%= i.title %></a></td>
+            <td><%= i.active ? 'Active' : 'Inactive' %></td>
+
+            <!-- edit -->
+            <td>
+              <form action="/items/<%= i._id %>/edit" method="get">
+                <button>Edit</button>
+              </form>
+            </td>
+
+            <!-- delete -->
+            <td>
+              <form action="/items/<%= i._id %>?_method=DELETE" method="post">
+                <button>Delete</button>
+              </form>
+            </td>
+
+            <!-- view offers (enabled only if offers received) -->
+            <td>
+              <form action="/items/<%= i._id %>/offers" method="get">
+                <button <%= i.totalOffers ? '' : 'disabled' %>>View Offers</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <p>You have not listed any items.</p>
+  <% } %>
+
+  <!-- ───────── Offers made ───────── -->
+  <h2>Offers You Made</h2>
+  <% if (offersMade.length === 0) { %>
+    <p>No offers made yet.</p>
+  <% } else { %>
+    <table>
+      <thead>
+        <tr><th>Item</th><th>Amount ($)</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <% offersMade.forEach(o => { %>
+          <tr>
+            <td>
+              <a href="/items/<%= o.item._id %>"><%= o.item.title %></a>
+              <% if (!o.item.active) { %> (closed) <% } %>
+            </td>
+            <td><%= o.amount.toFixed(2) %></td>
+            <td><%= o.status %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</main>
+
+<%- include('../partials/_footer') %>

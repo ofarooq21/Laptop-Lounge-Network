@@ -1,0 +1,35 @@
+<%- include('../partials/_header', { pageTitle: 'Offers' }) %>
+
+<main>
+  <h1>Offers for "<%= item.title %>"</h1>
+
+  <% if (offers.length === 0) { %>
+    <p>No offers yet.</p>
+  <% } else { %>
+    <table>
+      <thead>
+        <tr><th>Buyer</th><th>Amount ($)</th><th>Status</th><th></th></tr>
+      </thead>
+      <tbody>
+        <% offers.forEach(o => { %>
+          <tr>
+            <td><%= o.buyer.firstName %> <%= o.buyer.lastName %></td>
+            <td><%= o.amount.toFixed(2) %></td>
+            <td><%= o.status %></td>
+            <td>
+              <% if (item.active && o.status === 'pending') { %>
+                <form action="/items/<%= item._id %>/offers/<%= o._id %>/accept" method="post">
+                  <button>Accept</button>
+                </form>
+              <% } %>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+
+  <p><a href="/users/profile">Back to Profile</a></p>
+</main>
+
+<%- include('../partials/_footer') %>

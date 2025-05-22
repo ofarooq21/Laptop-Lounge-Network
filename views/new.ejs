@@ -1,0 +1,29 @@
+<%- include('partials/_header', { pageTitle: 'Sell a Laptop' }) %>
+
+<main>
+  <h1>List a New Laptop</h1>
+  <form action="/items" method="POST" class="new-item-form">
+    <label>Condition:</label>
+    <select name="condition" required>
+      <option value="">-- Select --</option>
+      <option>New</option><option>Like New</option>
+      <option>Excellent</option><option>Good</option><option>Fair</option>
+    </select>
+
+    <label>Title:</label>
+    <input name="title" required />
+
+    <label>Price ($):</label>
+    <input type="number" name="price" min="1" step="0.01" required />
+
+    <label>Details:</label>
+    <textarea name="details" rows="4" required></textarea>
+
+    <label>Image URL (optional):</label>
+    <input name="image" />
+
+    <button type="submit">Submit Listing</button>
+  </form>
+</main>
+
+<%- include('partials/_footer') %>

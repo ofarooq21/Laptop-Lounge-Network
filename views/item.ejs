@@ -1,0 +1,59 @@
+<%- include('partials/_header', { pageTitle: item.title }) %>
+
+<main>
+  <div class="item-detail-container">
+    <div class="item-detail-image">
+      <img src="<%= item.image %>" alt="<%= item.title %>" />
+    </div>
+
+    <div class="item-detail-info">
+      <h1><%= item.title %></h1>
+      <p>Price: $<%= item.price %></p>
+      <p>Condition: <%= item.condition %></p>
+      <p>Seller: <%= item.seller.firstName %> <%= item.seller.lastName %></p>
+      <p>Details: <%= item.details %></p>
+
+      <% if (item.totalOffers) { %>
+        <p><strong><%= item.totalOffers %></strong> offer(s) received.</p>
+        <% if (item.active) { %>
+          <p>Highest offer: $<%= item.highestOffer.toFixed(2) %></p>
+        <% } %>
+      <% } %>
+
+      <% if (!item.active) { %>
+        <p class="inactive-msg">This item is no longer available.</p>
+      <% } %>
+
+      <!-- seller controls -->
+      <% if (currentUserId && String(item.seller._id) === currentUserId) { %>
+        <div class="item-buttons">
+          <form action="/items/<%= item.id %>/edit" method="get" style="display:inline;">
+            <button>Edit</button>
+          </form>
+          <form action="/items/<%= item.id %>?_method=DELETE" method="post" style="display:inline;">
+            <button>Delete</button>
+          </form>
+          <% if (item.totalOffers) { %>
+            <form action="/items/<%= item.id %>/offers" method="get" style="display:inline;">
+              <button>View Offers</button>
+            </form>
+          <% } %>
+        </div>
+      <% } %>
+
+      <!-- buyer offer form -->
+      <% if (item.active && currentUserId && String(item.seller._id) !== currentUserId) { %>
+        <hr/>
+        <h3>Make an offer</h3>
+        <form action="/items/<%= item.id %>/offers" method="post">
+          <input type="number" name="amount" min="0.01" step="0.01" required />
+          <button type="submit">Submit Offer</button>
+        </form>
+      <% } else if (!currentUserId && item.active) { %>
+        <p><a href="/users/login">Log in</a> to make an offer.</p>
+      <% } %>
+    </div>
+  </div>
+</main>
+
+<%- include('partials/_footer') %>

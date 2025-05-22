@@ -1,0 +1,9 @@
+<!-- views/error.ejs -->
+<%- include('partials/_header', { pageTitle: 'Error' }) %>
+
+<main>
+  <h1>Error <%= code %></h1>
+  <p><%= message %></p>
+</main>
+
+<%- include('partials/_footer') %>
