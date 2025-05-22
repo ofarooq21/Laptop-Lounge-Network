@@ -1,4 +1,4 @@
-# Laptop Exchange Platform
+# Laptop Lounge Network Web Application
 
 A web application that allows users to exchange laptops with other users. Built with Node.js, Express, and MongoDB.
 
